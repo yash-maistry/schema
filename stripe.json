@@ -484,7 +484,7 @@
           "title": "total_tax_amounts"
         },
         "transfer_data": {
-          "type": "string",
+          "$ref": "#/definitions/StripeTransferData",
           "title": "transfer_data"
         },
         "webhooks_delivered_at": {
@@ -2178,7 +2178,7 @@
           "title": "statement_descriptor"
         },
         "transfer_data": {
-          "type": "string",
+          "$ref": "#/definitions/StripeTransferData",
           "title": "transfer_data"
         },
         "stripeAccount": {
@@ -2266,7 +2266,7 @@
           "title": "statement_descriptor"
         },
         "transfer_data": {
-          "type": "string",
+          "$ref": "#/definitions/StripeTransferData",
           "title": "transfer_data"
         },
         "stripeAccount": {
