@@ -2910,7 +2910,6 @@
         },
         "transfer_data": {
           "$ref": "#/definitions/StripeTransferData",
-          "type": "string",
           "title": "transfer_data"
         },
         "transfer_group": {
