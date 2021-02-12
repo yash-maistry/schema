@@ -2909,7 +2909,8 @@
           "title": "error_on_requires_action"
         },
         "transfer_data": {
-          "type": "boolean",
+          "$ref": "#/definitions/StripeTransferData",
+          "type": "string",
           "title": "transfer_data"
         },
         "transfer_group": {
