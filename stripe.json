@@ -1,0 +1,5404 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "StripeUsageType": {
+      "enum": ["licesed", "metered"],
+      "type": "string"
+    },
+    "StripeInterval": {
+      "enum": ["day", "month", "week", "year"],
+      "type": "string"
+    },
+    "StripeUsage": {
+      "enum": ["last_during_period", "last_ever", "max", "sum"],
+      "type": "string"
+    },
+    "StripeRecurring": {
+      "title": "StripeRecurring",
+      "type": "object",
+      "properties": {
+        "interval": {
+          "enum": ["day", "month", "week", "year"],
+          "type": "string",
+          "title": "interval"
+        },
+        "aggregate_usage": {
+          "enum": ["last_during_period", "last_ever", "max", "sum"],
+          "type": "string",
+          "title": "aggregate_usage"
+        },
+        "interval_count": {
+          "type": "number",
+          "title": "interval_count"
+        },
+        "usage_type": {
+          "enum": ["licesed", "metered"],
+          "type": "string",
+          "title": "usage_type"
+        }
+      }
+    },
+    "StripePrice": {
+      "title": "StripePrice",
+      "type": "object",
+      "properties": {
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        },
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "unit_amount": {
+          "type": "number",
+          "title": "unit_amount"
+        },
+        "active": {
+          "type": "boolean",
+          "title": "active"
+        },
+        "product": {
+          "type": "string",
+          "title": "product"
+        },
+        "recurring": {
+          "$ref": "#/definitions/StripeRecurring",
+          "title": "recurring"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        }
+      }
+    },
+    "StripeDiscount": {
+      "title": "StripeDiscount",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "end": {
+          "type": "number",
+          "title": "end"
+        },
+        "start": {
+          "type": "number",
+          "title": "start"
+        },
+        "subscription": {
+          "type": "string",
+          "title": "subscription"
+        }
+      }
+    },
+    "StripeInvoiceItem": {
+      "title": "StripeInvoiceItem",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "object": {
+          "type": "string",
+          "title": "object"
+        },
+        "amount": {
+          "type": "number",
+          "title": "amount"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "date": {
+          "type": "number",
+          "title": "date"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "discountable": {
+          "type": "boolean",
+          "title": "discountable"
+        },
+        "discounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StripeDiscount"
+          },
+          "title": "discounts"
+        },
+        "invoice": {
+          "type": "string",
+          "title": "invoice"
+        },
+        "livemode": {
+          "type": "boolean",
+          "title": "livemode"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "price": {
+          "$ref": "#/definitions/StripePrice",
+          "title": "price"
+        },
+        "proration": {
+          "type": "boolean",
+          "title": "proration"
+        },
+        "quantity": {
+          "type": "number",
+          "title": "quantity"
+        },
+        "subscription": {
+          "type": "string",
+          "title": "subscription"
+        },
+        "tax_rates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "tax_rates"
+        },
+        "unit_amount": {
+          "type": "number",
+          "title": "unit_amount"
+        },
+        "unit_amount_decimal": {
+          "type": "string",
+          "title": "unit_amount_decimal"
+        }
+      },
+      "required": ["discounts", "metadata"]
+    },
+    "StripeInvoice": {
+      "title": "StripeInvoice",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "object": {
+          "type": "string",
+          "title": "object"
+        },
+        "account_country": {
+          "type": "string",
+          "title": "account_country"
+        },
+        "account_name": {
+          "type": "string",
+          "title": "account_name"
+        },
+        "amount_due": {
+          "type": "number",
+          "title": "amount_due"
+        },
+        "amount_paid": {
+          "type": "number",
+          "title": "amount_paid"
+        },
+        "amount_remaining": {
+          "type": "string",
+          "title": "amount_remaining"
+        },
+        "application_fee_amount": {
+          "type": "string",
+          "title": "application_fee_amount"
+        },
+        "attempt_count": {
+          "type": "number",
+          "title": "attempt_count"
+        },
+        "attempted": {
+          "type": "boolean",
+          "title": "attempted"
+        },
+        "auto_advance": {
+          "type": "string",
+          "title": "auto_advance"
+        },
+        "billing_reason": {
+          "type": "string",
+          "title": "billing_reason"
+        },
+        "charge": {
+          "type": "string",
+          "title": "charge"
+        },
+        "collection_method": {
+          "type": "string",
+          "title": "collection_method"
+        },
+        "created": {
+          "type": "number",
+          "title": "created"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "custom_fields": {
+          "type": "string",
+          "title": "custom_fields"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "customer_address": {
+          "type": "string",
+          "title": "customer_address"
+        },
+        "customer_email": {
+          "type": "string",
+          "title": "customer_email"
+        },
+        "customer_name": {
+          "type": "string",
+          "title": "customer_name"
+        },
+        "customer_phone": {
+          "type": "string",
+          "title": "customer_phone"
+        },
+        "customer_shipping": {
+          "type": "string",
+          "title": "customer_shipping"
+        },
+        "customer_tax_exempt": {
+          "type": "string",
+          "title": "customer_tax_exempt"
+        },
+        "customer_tax_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "customer_tax_ids"
+        },
+        "default_payment_method": {
+          "type": "string",
+          "title": "default_payment_method"
+        },
+        "default_source": {
+          "type": "string",
+          "title": "default_source"
+        },
+        "default_tax_rates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "default_tax_rates"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "discount": {
+          "type": "string",
+          "title": "discount"
+        },
+        "discounts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "discounts"
+        },
+        "due_date": {
+          "type": "string",
+          "title": "due_date"
+        },
+        "ending_balance": {
+          "type": "string",
+          "title": "ending_balance"
+        },
+        "footer": {
+          "type": "string",
+          "title": "footer"
+        },
+        "hosted_invoice_url": {
+          "type": "string",
+          "title": "hosted_invoice_url"
+        },
+        "invoice_pdf": {
+          "type": "string",
+          "title": "invoice_pdf"
+        },
+        "lines": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "data"
+            },
+            "has_more": {
+              "type": "string",
+              "title": "has_more"
+            },
+            "object": {
+              "type": "string",
+              "title": "object"
+            },
+            "url": {
+              "type": "string",
+              "title": "url"
+            }
+          },
+          "title": "lines"
+        },
+        "livemode": {
+          "type": "string",
+          "title": "livemode"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "next_payment_attempt": {
+          "type": "string",
+          "title": "next_payment_attempt"
+        },
+        "number": {
+          "type": "string",
+          "title": "number"
+        },
+        "paid": {
+          "type": "boolean",
+          "title": "paid"
+        },
+        "payment_intent": {
+          "type": "string",
+          "title": "payment_intent"
+        },
+        "period_end": {
+          "type": "number",
+          "title": "period_end"
+        },
+        "period_start": {
+          "type": "number",
+          "title": "period_start"
+        },
+        "post_payment_credit_notes_amount": {
+          "type": "string",
+          "title": "post_payment_credit_notes_amount"
+        },
+        "pre_payment_credit_notes_amount": {
+          "type": "string",
+          "title": "pre_payment_credit_notes_amount"
+        },
+        "receipt_number": {
+          "type": "string",
+          "title": "receipt_number"
+        },
+        "starting_balance": {
+          "type": "string",
+          "title": "starting_balance"
+        },
+        "statement_descriptor": {
+          "type": "string",
+          "title": "statement_descriptor"
+        },
+        "status": {
+          "type": "string",
+          "title": "status"
+        },
+        "status_transitions": {
+          "type": "object",
+          "properties": {
+            "finalized_at": {
+              "type": "number",
+              "title": "finalized_at"
+            },
+            "marked_uncollectible_at": {
+              "type": "string",
+              "title": "marked_uncollectible_at"
+            },
+            "paid_at": {
+              "type": "number",
+              "title": "paid_at"
+            },
+            "voided_at": {
+              "type": "string",
+              "title": "voided_at"
+            }
+          },
+          "title": "status_transitions"
+        },
+        "subscription": {
+          "type": "string",
+          "title": "subscription"
+        },
+        "subtotal": {
+          "type": "number",
+          "title": "subtotal"
+        },
+        "tax": {
+          "type": "string",
+          "title": "tax"
+        },
+        "total": {
+          "type": "number",
+          "title": "total"
+        },
+        "total_discount_amounts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "total_discount_amounts"
+        },
+        "total_tax_amounts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "total_tax_amounts"
+        },
+        "transfer_data": {
+          "type": "string",
+          "title": "transfer_data"
+        },
+        "webhooks_delivered_at": {
+          "type": "number",
+          "title": "webhooks_delivered_at"
+        }
+      }
+    },
+    "StripeAccount": {
+      "title": "StripeAccount",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "object": {
+          "type": "string",
+          "title": "object"
+        },
+        "business_profile": {
+          "type": "object",
+          "properties": {
+            "mcc": {
+              "type": "string",
+              "title": "mcc"
+            },
+            "name": {
+              "type": "string",
+              "title": "name"
+            },
+            "product_description": {
+              "type": "string",
+              "title": "product_description"
+            },
+            "support_address": {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string",
+                  "title": "city"
+                },
+                "country": {
+                  "type": "string",
+                  "title": "country"
+                },
+                "line1": {
+                  "type": "string",
+                  "title": "line1"
+                },
+                "line2": {
+                  "type": "string",
+                  "title": "line2"
+                },
+                "postal_code": {
+                  "type": "string",
+                  "title": "postal_code"
+                },
+                "state": {
+                  "type": "string",
+                  "title": "state"
+                }
+              },
+              "title": "support_address"
+            },
+            "support_email": {
+              "type": "string",
+              "title": "support_email"
+            },
+            "support_phone": {
+              "type": "string",
+              "title": "support_phone"
+            },
+            "support_url": {
+              "type": "string",
+              "title": "support_url"
+            },
+            "url": {
+              "type": "string",
+              "title": "url"
+            }
+          },
+          "title": "business_profile"
+        },
+        "business_type": {
+          "type": "string",
+          "title": "business_type"
+        },
+        "capabilities": {
+          "type": "object",
+          "properties": {
+            "card_payments": {
+              "type": "string",
+              "title": "card_payments"
+            },
+            "transfers": {
+              "type": "string",
+              "title": "transfers"
+            }
+          },
+          "title": "capabilities"
+        },
+        "charges_enabled": {
+          "type": "boolean",
+          "title": "charges_enabled"
+        },
+        "country": {
+          "type": "string",
+          "title": "country"
+        },
+        "default_currency": {
+          "type": "string",
+          "title": "default_currency"
+        },
+        "details_submitted": {
+          "type": "boolean",
+          "title": "details_submitted"
+        },
+        "email": {
+          "type": "string",
+          "title": "email"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "payouts_enabled": {
+          "type": "boolean",
+          "title": "payouts_enabled"
+        },
+        "requirements": {
+          "type": "object",
+          "properties": {
+            "current_deadline": {
+              "type": "string",
+              "title": "current_deadline"
+            },
+            "currently_due": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "currently_due"
+            },
+            "disabled_reason": {
+              "type": "string",
+              "title": "disabled_reason"
+            },
+            "errors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "errors"
+            },
+            "eventually_due": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "eventually_due"
+            },
+            "past_due": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "past_due"
+            },
+            "pending_verification": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "pending_verification"
+            }
+          },
+          "title": "requirements"
+        },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "bacs_debit_payments": {
+              "type": "object",
+              "properties": {
+                "display_name": {
+                  "type": "string",
+                  "title": "display_name"
+                }
+              },
+              "title": "bacs_debit_payments"
+            },
+            "branding": {
+              "type": "object",
+              "properties": {
+                "icon": {
+                  "type": "string",
+                  "title": "icon"
+                },
+                "logo": {
+                  "type": "string",
+                  "title": "logo"
+                },
+                "primary_color": {
+                  "type": "string",
+                  "title": "primary_color"
+                },
+                "secondary_color": {
+                  "type": "string",
+                  "title": "secondary_color"
+                }
+              },
+              "title": "branding"
+            },
+            "card_payments": {
+              "type": "object",
+              "properties": {
+                "decline_on": {
+                  "type": "object",
+                  "properties": {
+                    "avs_failure": {
+                      "type": "string",
+                      "title": "avs_failure"
+                    },
+                    "cvc_failure": {
+                      "type": "boolean",
+                      "title": "cvc_failure"
+                    }
+                  },
+                  "title": "decline_on"
+                },
+                "statement_descriptor_prefix": {
+                  "type": "string",
+                  "title": "statement_descriptor_prefix"
+                }
+              },
+              "title": "card_payments"
+            },
+            "dashboard": {
+              "type": "object",
+              "properties": {
+                "display_name": {
+                  "type": "string",
+                  "title": "display_name"
+                },
+                "timezone": {
+                  "type": "string",
+                  "title": "timezone"
+                }
+              },
+              "title": "dashboard"
+            },
+            "payments": {
+              "type": "object",
+              "properties": {
+                "statement_descriptor": {
+                  "type": "string",
+                  "title": "statement_descriptor"
+                },
+                "statement_descriptor_kana": {
+                  "type": "string",
+                  "title": "statement_descriptor_kana"
+                },
+                "statement_descriptor_kanji": {
+                  "type": "string",
+                  "title": "statement_descriptor_kanji"
+                }
+              },
+              "title": "payments"
+            },
+            "payouts": {
+              "type": "object",
+              "properties": {
+                "debit_negative_balances": {
+                  "type": "boolean",
+                  "title": "debit_negative_balances"
+                },
+                "schedule": {
+                  "type": "object",
+                  "properties": {
+                    "delay_days": {
+                      "type": "number",
+                      "title": "delay_days"
+                    },
+                    "interval": {
+                      "type": "string",
+                      "title": "interval"
+                    },
+                    "weekly_anchor": {
+                      "type": "string",
+                      "title": "weekly_anchor"
+                    }
+                  },
+                  "title": "schedule"
+                },
+                "statement_descriptor": {
+                  "type": "string",
+                  "title": "statement_descriptor"
+                }
+              },
+              "title": "payouts"
+            },
+            "external_accounts": {
+              "type": "object",
+              "properties": {
+                "object": {
+                  "type": "string",
+                  "title": "object"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "data"
+                },
+                "has_more": {
+                  "type": "string",
+                  "title": "has_more"
+                },
+                "url": {
+                  "type": "string",
+                  "title": "url"
+                }
+              },
+              "title": "external_accounts"
+            }
+          },
+          "title": "settings"
+        },
+        "tos_acceptance": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "number",
+              "title": "date"
+            },
+            "ip": {
+              "type": "string",
+              "title": "ip"
+            },
+            "user_agent": {
+              "type": "string",
+              "title": "user_agent"
+            }
+          },
+          "title": "tos_acceptance"
+        },
+        "company": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string",
+                  "title": "city"
+                },
+                "country": {
+                  "type": "string",
+                  "title": "country"
+                },
+                "line1": {
+                  "type": "string",
+                  "title": "line1"
+                },
+                "line2": {
+                  "type": "string",
+                  "title": "line2"
+                },
+                "postal_code": {
+                  "type": "string",
+                  "title": "postal_code"
+                },
+                "state": {
+                  "type": "string",
+                  "title": "state"
+                }
+              },
+              "title": "address"
+            },
+            "directors_provided": {
+              "type": "string",
+              "title": "directors_provided"
+            },
+            "executives_provided": {
+              "type": "boolean",
+              "title": "executives_provided"
+            },
+            "name": {
+              "type": "string",
+              "title": "name"
+            },
+            "owners_provided": {
+              "type": "boolean",
+              "title": "owners_provided"
+            },
+            "tax_id_provided": {
+              "type": "boolean",
+              "title": "tax_id_provided"
+            },
+            "verification": {
+              "type": "object",
+              "properties": {
+                "document": {
+                  "type": "object",
+                  "properties": {
+                    "back": {
+                      "type": "string",
+                      "title": "back"
+                    },
+                    "details": {
+                      "type": "string",
+                      "title": "details"
+                    },
+                    "details_code": {
+                      "type": "string",
+                      "title": "details_code"
+                    },
+                    "front": {
+                      "type": "string",
+                      "title": "front"
+                    }
+                  },
+                  "title": "document"
+                }
+              },
+              "title": "verification"
+            },
+            "payouts": {
+              "type": "object",
+              "properties": {
+                "debit_negative_balances": {
+                  "type": "boolean",
+                  "title": "debit_negative_balances"
+                },
+                "schedule": {
+                  "type": "object",
+                  "properties": {
+                    "delay_days": {
+                      "type": "number",
+                      "title": "delay_days"
+                    },
+                    "interval": {
+                      "type": "string",
+                      "title": "interval"
+                    },
+                    "weekly_anchor": {
+                      "type": "string",
+                      "title": "weekly_anchor"
+                    }
+                  },
+                  "title": "schedule"
+                },
+                "statement_descriptor": {
+                  "type": "string",
+                  "title": "statement_descriptor"
+                }
+              },
+              "title": "payouts"
+            }
+          },
+          "title": "company"
+        }
+      }
+    },
+    "StripeRefund": {
+      "title": "StripeRefund",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "object": {
+          "type": "string",
+          "title": "object"
+        },
+        "amount": {
+          "type": "number",
+          "title": "amount"
+        },
+        "balance_transaction": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "balance_transaction"
+        },
+        "charge": {
+          "type": "string",
+          "title": "charge"
+        },
+        "created": {
+          "type": "number",
+          "title": "created"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "payment_intent": {
+          "type": "string",
+          "title": "payment_intent"
+        },
+        "reason": {
+          "type": "string",
+          "title": "reason"
+        },
+        "receipt_number": {
+          "type": "string",
+          "title": "receipt_number"
+        },
+        "source_transfer_reversal": {
+          "type": "string",
+          "title": "source_transfer_reversal"
+        },
+        "status": {
+          "type": "string",
+          "title": "status"
+        },
+        "transfer_reversal": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "transfer_reversal"
+        }
+      },
+      "required": [
+        "amount",
+        "created",
+        "currency",
+        "id",
+        "object",
+        "receipt_number",
+        "status"
+      ]
+    },
+    "StripeApplicationFee": {
+      "title": "StripeApplicationFee",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "object": {
+          "type": "string",
+          "title": "object"
+        },
+        "account": {
+          "type": "string",
+          "title": "account"
+        },
+        "amount": {
+          "type": "number",
+          "title": "amount"
+        },
+        "amount_refunded": {
+          "type": "string",
+          "title": "amount_refunded"
+        },
+        "application": {
+          "type": "string",
+          "title": "application"
+        },
+        "balance_transaction": {
+          "type": "string",
+          "title": "balance_transaction"
+        },
+        "charge": {
+          "type": "string",
+          "title": "charge"
+        },
+        "created": {
+          "type": "number",
+          "title": "created"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "livemode": {
+          "type": "string",
+          "title": "livemode"
+        },
+        "originating_transaction": {
+          "type": "string",
+          "title": "originating_transaction"
+        },
+        "refunded": {
+          "type": "string",
+          "title": "refunded"
+        },
+        "refunds": {
+          "type": "object",
+          "properties": {
+            "object": {
+              "type": "string",
+              "title": "object"
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StripeRefund"
+              },
+              "title": "data"
+            },
+            "has_more": {
+              "type": "string",
+              "title": "has_more"
+            },
+            "url": {
+              "type": "string",
+              "title": "url"
+            }
+          },
+          "title": "refunds"
+        }
+      }
+    },
+    "StripeShipping": {
+      "title": "StripeShipping",
+      "type": "object",
+      "properties": {
+        "carrier": {
+          "type": "string",
+          "title": "carrier"
+        },
+        "name": {
+          "type": "string",
+          "title": "name"
+        },
+        "phone": {
+          "type": "string",
+          "title": "phone"
+        },
+        "tracking_number": {
+          "type": "string",
+          "title": "tracking_number"
+        }
+      }
+    },
+    "StripeCustomer": {
+      "title": "StripeCustomer",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "title": "email"
+        },
+        "name": {
+          "type": "string",
+          "title": "name"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        },
+        "address": {
+          "$ref": "#/definitions/StripeAddress",
+          "title": "address"
+        },
+        "balance": {
+          "type": "number",
+          "title": "balance"
+        },
+        "created": {
+          "type": "number",
+          "title": "created"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "default_source": {
+          "type": "string",
+          "title": "default_source"
+        },
+        "delinquent": {
+          "type": "boolean",
+          "title": "delinquent"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "discount": {
+          "$ref": "#/definitions/StripeDiscount",
+          "title": "discount"
+        },
+        "invoice_prefix": {
+          "type": "string",
+          "title": "invoice_prefix"
+        },
+        "livemode": {
+          "type": "boolean",
+          "title": "livemode"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "next_invoice_sequence": {
+          "type": "number",
+          "title": "next_invoice_sequence"
+        },
+        "phone": {
+          "type": "string",
+          "title": "phone"
+        },
+        "preferred_locales": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "preferred_locales"
+        },
+        "shipping": {
+          "$ref": "#/definitions/StripeShipping",
+          "title": "shipping"
+        },
+        "sources": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true
+              },
+              "title": "data"
+            },
+            "has_more": {
+              "type": "boolean",
+              "title": "has_more"
+            },
+            "url": {
+              "type": "string",
+              "title": "url"
+            }
+          },
+          "required": ["data", "url"],
+          "title": "sources"
+        }
+      }
+    },
+    "StripeClient": {
+      "title": "StripeClient",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "title": "code"
+        },
+        "grant_type": {
+          "type": "string",
+          "title": "grant_type"
+        }
+      }
+    },
+    "StripeCharge": {
+      "title": "StripeCharge",
+      "type": "object",
+      "properties": {
+        "charge_name": {
+          "type": "string",
+          "title": "charge_name"
+        },
+        "testMode": {
+          "type": "boolean",
+          "title": "testMode"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "source": {
+          "type": "string",
+          "title": "source"
+        },
+        "object": {
+          "type": "string",
+          "title": "object"
+        },
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "amount": {
+          "type": "number",
+          "title": "amount"
+        },
+        "amount_refunded": {
+          "type": "number",
+          "title": "amount_refunded"
+        },
+        "application_fee": {
+          "type": "number",
+          "title": "application_fee"
+        },
+        "captured": {
+          "type": "boolean",
+          "title": "captured"
+        },
+        "created": {
+          "type": "number",
+          "title": "created"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "invoice": {
+          "type": "string",
+          "title": "invoice"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        }
+      }
+    },
+    "StripeFutureUsage": {
+      "enum": ["off_session", "on_session"],
+      "type": "string"
+    },
+    "StripeAddress": {
+      "title": "StripeAddress",
+      "type": "object",
+      "properties": {
+        "city": {
+          "type": "string",
+          "title": "city"
+        },
+        "country": {
+          "type": "string",
+          "title": "country"
+        },
+        "line1": {
+          "type": "string",
+          "title": "line1"
+        },
+        "line2": {
+          "type": "string",
+          "title": "line2"
+        },
+        "postal_code": {
+          "type": "string",
+          "title": "postal_code"
+        },
+        "state": {
+          "type": "string",
+          "title": "state"
+        }
+      }
+    },
+    "StripeCoupon": {
+      "title": "StripeCoupon",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "object": {
+          "type": "string",
+          "title": "object"
+        },
+        "amount_off": {
+          "type": "string",
+          "title": "amount_off"
+        },
+        "created": {
+          "type": "number",
+          "title": "created"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "duration": {
+          "type": "string",
+          "title": "duration"
+        },
+        "duration_in_months": {
+          "type": "number",
+          "title": "duration_in_months"
+        },
+        "livemode": {
+          "type": "string",
+          "title": "livemode"
+        },
+        "max_redemptions": {
+          "type": "string",
+          "title": "max_redemptions"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "name": {
+          "type": "string",
+          "title": "name"
+        },
+        "percent_off": {
+          "type": "number",
+          "title": "percent_off"
+        },
+        "redeem_by": {
+          "type": "string",
+          "title": "redeem_by"
+        },
+        "times_redeemed": {
+          "type": "string",
+          "title": "times_redeemed"
+        },
+        "valid": {
+          "type": "boolean",
+          "title": "valid"
+        }
+      }
+    },
+    "StripeCard": {
+      "title": "StripeCard",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "object": {
+          "type": "string",
+          "title": "object"
+        },
+        "source": {
+          "type": "string",
+          "title": "source"
+        },
+        "address_city": {
+          "type": "string",
+          "title": "address_city"
+        },
+        "address_country": {
+          "type": "string",
+          "title": "address_country"
+        },
+        "address_line1": {
+          "type": "string",
+          "title": "address_line1"
+        },
+        "address_line1_check": {
+          "type": "string",
+          "title": "address_line1_check"
+        },
+        "address_line2": {
+          "type": "string",
+          "title": "address_line2"
+        },
+        "address_state": {
+          "type": "string",
+          "title": "address_state"
+        },
+        "address_zip": {
+          "type": "string",
+          "title": "address_zip"
+        },
+        "address_zip_check": {
+          "type": "string",
+          "title": "address_zip_check"
+        },
+        "brand": {
+          "type": "string",
+          "title": "brand"
+        },
+        "country": {
+          "type": "string",
+          "title": "country"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "cvc_check": {
+          "type": "string",
+          "title": "cvc_check"
+        },
+        "dynamic_last4": {
+          "type": "string",
+          "title": "dynamic_last4"
+        },
+        "exp_month": {
+          "type": "number",
+          "title": "exp_month"
+        },
+        "exp_year": {
+          "type": "number",
+          "title": "exp_year"
+        },
+        "fingerprint": {
+          "type": "string",
+          "title": "fingerprint"
+        },
+        "funding": {
+          "type": "string",
+          "title": "funding"
+        },
+        "last4": {
+          "type": "string",
+          "title": "last4"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "name": {
+          "type": "string",
+          "title": "name"
+        },
+        "tokenization_method": {
+          "type": "string",
+          "title": "tokenization_method"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "StripeBankAccount": {
+      "title": "StripeBankAccount",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "object": {
+          "type": "string",
+          "title": "object"
+        },
+        "account_holder_name": {
+          "type": "string",
+          "title": "account_holder_name"
+        },
+        "account_holder_type": {
+          "type": "string",
+          "title": "account_holder_type"
+        },
+        "bank_name": {
+          "type": "string",
+          "title": "bank_name"
+        },
+        "country": {
+          "type": "string",
+          "title": "country"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "fingerprint": {
+          "type": "string",
+          "title": "fingerprint"
+        },
+        "last4": {
+          "type": "string",
+          "title": "last4"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "routing_number": {
+          "type": "string",
+          "title": "routing_number"
+        },
+        "account": {
+          "type": "string",
+          "title": "account"
+        },
+        "status": {
+          "type": "string",
+          "title": "status"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "StripePaymentIntent": {
+      "title": "StripePaymentIntent",
+      "type": "object",
+      "properties": {
+        "charge_name": {
+          "type": "string",
+          "title": "charge_name"
+        },
+        "testMode": {
+          "type": "boolean",
+          "title": "testMode"
+        },
+        "amount": {
+          "type": "number",
+          "title": "amount"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "confirm": {
+          "type": "boolean",
+          "title": "confirm"
+        },
+        "off_session": {
+          "type": "boolean",
+          "title": "off_session"
+        },
+        "payment_method": {
+          "type": "string",
+          "title": "payment_method"
+        },
+        "payment_method_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "payment_method_types"
+        },
+        "setup_future_usage": {
+          "enum": ["off_session", "on_session"],
+          "type": "string",
+          "title": "setup_future_usage"
+        },
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "object": {
+          "type": "string",
+          "title": "object"
+        },
+        "amount_refunded": {
+          "type": "number",
+          "title": "amount_refunded"
+        },
+        "application_fee_amount": {
+          "type": "number",
+          "title": "application_fee_amount"
+        },
+        "created": {
+          "type": "number",
+          "title": "created"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "invoice": {
+          "type": "string",
+          "title": "invoice"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        },
+        "receipt_email": {
+          "type": "string",
+          "title": "receipt_email"
+        },
+        "review": {
+          "type": "string",
+          "title": "review"
+        },
+        "shipping": {
+          "$ref": "#/definitions/StripeShipping",
+          "title": "shipping"
+        },
+        "statement_descriptor": {
+          "type": "string",
+          "title": "statement_descriptor"
+        },
+        "statement_descriptor_suffix": {
+          "type": "string",
+          "title": "statement_descriptor_suffix"
+        },
+        "status": {
+          "type": "string",
+          "title": "status"
+        },
+        "transfer_data": {
+          "$ref": "#/definitions/StripeTransferData",
+          "title": "transfer_data"
+        },
+        "transfer_group": {
+          "type": "string",
+          "title": "transfer_group"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        }
+      }
+    },
+    "StripeProduct": {
+      "title": "StripeProduct",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "active": {
+          "type": "boolean",
+          "title": "active"
+        },
+        "name": {
+          "type": "string",
+          "title": "name"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        }
+      },
+      "required": ["name"]
+    },
+    "StripeSubscriptionStatus": {
+      "enum": [
+        "active",
+        "cancelled",
+        "incomplete",
+        "incomplete_expired",
+        "past_due",
+        "trialing",
+        "unpaid"
+      ],
+      "type": "string"
+    },
+    "StripePlan": {
+      "title": "StripePlan",
+      "type": "object",
+      "properties": {
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        },
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "active": {
+          "type": "boolean",
+          "title": "active"
+        },
+        "amount": {
+          "type": "number",
+          "title": "amount"
+        },
+        "currency": {
+          "type": "number",
+          "title": "currency"
+        },
+        "interval": {
+          "enum": ["day", "month", "week", "year"],
+          "type": "string",
+          "title": "interval"
+        },
+        "plan": {
+          "type": "string",
+          "title": "plan"
+        },
+        "price": {
+          "type": "string",
+          "title": "price"
+        },
+        "quantity": {
+          "type": "string",
+          "title": "quantity"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        }
+      }
+    },
+    "StripePaymentMethod": {
+      "title": "StripePaymentMethod",
+      "type": "object",
+      "properties": {
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        },
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        }
+      }
+    },
+    "StripeSubscriptionItem": {
+      "title": "StripeSubscriptionItem",
+      "type": "object",
+      "properties": {
+        "plan": {
+          "type": "string",
+          "title": "plan"
+        },
+        "price": {
+          "type": "string",
+          "title": "price"
+        },
+        "quantity": {
+          "type": "string",
+          "title": "quantity"
+        }
+      }
+    },
+    "StripeTransferData": {
+      "title": "StripeTransferData",
+      "type": "object",
+      "properties": {
+        "destination": {
+          "type": "string",
+          "title": "destination"
+        },
+        "transfer_percent": {
+          "type": "number",
+          "title": "transfer_percent"
+        }
+      }
+    },
+    "StripeList": {
+      "title": "StripeList",
+      "type": "object",
+      "properties": {
+        "ending_before": {
+          "type": "string",
+          "title": "ending_before"
+        },
+        "starting_after": {
+          "type": "string",
+          "title": "starting_after"
+        },
+        "limit": {
+          "type": "number",
+          "title": "limit"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        },
+        "autoPaginate": {
+          "type": "boolean",
+          "title": "autoPaginate"
+        }
+      }
+    },
+    "StripeSubscription": {
+      "title": "StripeSubscription",
+      "type": "object",
+      "properties": {
+        "subscription_name": {
+          "type": "string",
+          "title": "subscription_name"
+        },
+        "object": {
+          "type": "string",
+          "title": "object"
+        },
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "plan": {
+          "type": "string",
+          "title": "plan"
+        },
+        "price": {
+          "type": "string",
+          "title": "price"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StripeSubscriptionItem"
+          },
+          "title": "items"
+        },
+        "cancel_at_period_end": {
+          "type": "boolean",
+          "title": "cancel_at_period_end"
+        },
+        "current_period_end": {
+          "type": "number",
+          "title": "current_period_end"
+        },
+        "current_period_start": {
+          "type": "number",
+          "title": "current_period_start"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "invoice": {
+          "type": "string",
+          "title": "invoice"
+        },
+        "days_until_due": {
+          "type": "number",
+          "title": "days_until_due"
+        },
+        "transfer_data": {
+          "$ref": "#/definitions/StripeTransferData",
+          "title": "transfer_data"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        },
+        "default_payment_method": {
+          "type": "string",
+          "title": "default_payment_method"
+        },
+        "default_source": {
+          "type": "string",
+          "title": "default_source"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        }
+      }
+    },
+    "ConnectOptions": {
+      "title": "ConnectOptions",
+      "type": "object",
+      "properties": {
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "StripeHash": {
+      "title": "StripeHash",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "name"
+        },
+        "value": {
+          "type": "string",
+          "title": "value"
+        }
+      },
+      "required": ["name", "value"]
+    },
+    "StripeGetRequest": {
+      "title": "StripeGetRequest",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "required": ["id"]
+    },
+    "DateFilterOpts": {
+      "title": "DateFilterOpts",
+      "type": "object",
+      "properties": {
+        "gt": {
+          "type": ["string", "number"],
+          "title": "gt"
+        },
+        "gte": {
+          "type": ["string", "number"],
+          "title": "gte"
+        },
+        "lt": {
+          "type": ["string", "number"],
+          "title": "lt"
+        },
+        "lte": {
+          "type": ["string", "number"],
+          "title": "lte"
+        }
+      }
+    },
+    "ListOpts": {
+      "title": "ListOpts",
+      "type": "object",
+      "properties": {
+        "created": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/DateFilterOpts"
+            },
+            {
+              "type": ["string", "number"]
+            }
+          ],
+          "title": "created"
+        },
+        "limit": {
+          "type": "number",
+          "title": "limit"
+        },
+        "starting_after": {
+          "type": "string",
+          "title": "starting_after"
+        },
+        "ending_before": {
+          "type": "string",
+          "title": "ending_before"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "RetrieveOpts": {
+      "title": "RetrieveOpts",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["id"]
+    },
+    "PeriodOpts": {
+      "title": "PeriodOpts",
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "number",
+          "title": "start"
+        },
+        "end": {
+          "type": "number",
+          "title": "end"
+        }
+      },
+      "required": ["end", "start"]
+    },
+    "CreateInvoiceOpts": {
+      "title": "CreateInvoiceOpts",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "auto_advance": {
+          "type": "boolean",
+          "title": "auto_advance"
+        },
+        "collection_method": {
+          "enum": ["charge_automatically", "send_invoice"],
+          "type": "string",
+          "title": "collection_method"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "subscription": {
+          "type": "string",
+          "title": "subscription"
+        },
+        "application_fee_amount": {
+          "type": "number",
+          "title": "application_fee_amount"
+        },
+        "custom_fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StripeHash"
+          },
+          "title": "custom_fields"
+        },
+        "days_until_due": {
+          "type": "number",
+          "title": "days_until_due"
+        },
+        "default_payment_method": {
+          "type": "string",
+          "title": "default_payment_method"
+        },
+        "default_source": {
+          "type": "string",
+          "title": "default_source"
+        },
+        "default_tax_rates": {
+          "type": "string",
+          "title": "default_tax_rates"
+        },
+        "discounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StripeHash"
+          },
+          "title": "discounts"
+        },
+        "due_date": {
+          "type": "number",
+          "title": "due_date"
+        },
+        "footer": {
+          "type": "string",
+          "title": "footer"
+        },
+        "statement_descriptor": {
+          "type": "string",
+          "title": "statement_descriptor"
+        },
+        "transfer_data": {
+          "type": "string",
+          "title": "transfer_data"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["customer"]
+    },
+    "UpdateInvoiceOpts": {
+      "title": "UpdateInvoiceOpts",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "auto_advance": {
+          "type": "boolean",
+          "title": "auto_advance"
+        },
+        "collection_method": {
+          "enum": ["charge_automatically", "send_invoice"],
+          "type": "string",
+          "title": "collection_method"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "subscription": {
+          "type": "string",
+          "title": "subscription"
+        },
+        "application_fee_amount": {
+          "type": "number",
+          "title": "application_fee_amount"
+        },
+        "custom_fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StripeHash"
+          },
+          "title": "custom_fields"
+        },
+        "days_until_due": {
+          "type": "number",
+          "title": "days_until_due"
+        },
+        "default_payment_method": {
+          "type": "string",
+          "title": "default_payment_method"
+        },
+        "default_source": {
+          "type": "string",
+          "title": "default_source"
+        },
+        "default_tax_rates": {
+          "type": "string",
+          "title": "default_tax_rates"
+        },
+        "discounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StripeHash"
+          },
+          "title": "discounts"
+        },
+        "due_date": {
+          "type": "number",
+          "title": "due_date"
+        },
+        "footer": {
+          "type": "string",
+          "title": "footer"
+        },
+        "statement_descriptor": {
+          "type": "string",
+          "title": "statement_descriptor"
+        },
+        "transfer_data": {
+          "type": "string",
+          "title": "transfer_data"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["id"]
+    },
+    "FinalizeInvoice": {
+      "title": "FinalizeInvoice",
+      "type": "object",
+      "properties": {
+        "auto_advance": {
+          "type": "boolean",
+          "title": "auto_advance"
+        }
+      }
+    },
+    "PayInvoice": {
+      "title": "PayInvoice",
+      "type": "object",
+      "properties": {
+        "forgive": {
+          "type": "boolean",
+          "title": "forgive"
+        },
+        "off_session": {
+          "type": "boolean",
+          "title": "off_session"
+        },
+        "paid_out_of_band": {
+          "type": "boolean",
+          "title": "paid_out_of_band"
+        },
+        "payment_method": {
+          "type": "string",
+          "title": "payment_method"
+        },
+        "source": {
+          "type": "string",
+          "title": "source"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "ListInvoicesOpts": {
+      "title": "ListInvoicesOpts",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "status": {
+          "enum": ["draft", "open", "paid", "uncollectible", "void"],
+          "type": "string",
+          "title": "status"
+        },
+        "subscription": {
+          "type": "string",
+          "title": "subscription"
+        },
+        "collection_method": {
+          "enum": ["charge_automatically", "send_invoice"],
+          "type": "string",
+          "title": "collection_method"
+        },
+        "due_date": {
+          "type": "number",
+          "title": "due_date"
+        },
+        "created": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/DateFilterOpts"
+            },
+            {
+              "type": ["string", "number"]
+            }
+          ],
+          "title": "created"
+        },
+        "limit": {
+          "type": "number",
+          "title": "limit"
+        },
+        "starting_after": {
+          "type": "string",
+          "title": "starting_after"
+        },
+        "ending_before": {
+          "type": "string",
+          "title": "ending_before"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "CreateInvoiceItemOpts": {
+      "title": "CreateInvoiceItemOpts",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "amount": {
+          "type": "number",
+          "title": "amount"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "period": {
+          "$ref": "#/definitions/PeriodOpts",
+          "title": "period"
+        },
+        "price": {
+          "type": "string",
+          "title": "price"
+        },
+        "discountable": {
+          "type": "boolean",
+          "title": "discountable"
+        },
+        "discounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StripeHash"
+          },
+          "title": "discounts"
+        },
+        "invoice": {
+          "type": "string",
+          "title": "invoice"
+        },
+        "price_data": {
+          "$ref": "#/definitions/StripePrice",
+          "title": "price_data"
+        },
+        "quantity": {
+          "type": "number",
+          "title": "quantity"
+        },
+        "subscription": {
+          "type": "string",
+          "title": "subscription"
+        },
+        "tax_rates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "tax_rates"
+        },
+        "unit_amount": {
+          "type": "number",
+          "title": "unit_amount"
+        },
+        "unit_amount_decimal": {
+          "type": "string",
+          "title": "unit_amount_decimal"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["customer", "discounts"]
+    },
+    "UpdateInvoiceItemOpts": {
+      "title": "UpdateInvoiceItemOpts",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "title": "amount"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "period": {
+          "$ref": "#/definitions/PeriodOpts",
+          "title": "period"
+        },
+        "price": {
+          "type": "string",
+          "title": "price"
+        },
+        "discountable": {
+          "type": "boolean",
+          "title": "discountable"
+        },
+        "discounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StripeHash"
+          },
+          "title": "discounts"
+        },
+        "invoice": {
+          "type": "string",
+          "title": "invoice"
+        },
+        "price_data": {
+          "$ref": "#/definitions/StripePrice",
+          "title": "price_data"
+        },
+        "quantity": {
+          "type": "number",
+          "title": "quantity"
+        },
+        "tax_rates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "tax_rates"
+        },
+        "unit_amount": {
+          "type": "number",
+          "title": "unit_amount"
+        },
+        "unit_amount_decimal": {
+          "type": "string",
+          "title": "unit_amount_decimal"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["discounts"]
+    },
+    "ListInvoiceItemsOpts": {
+      "title": "ListInvoiceItemsOpts",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "invoice": {
+          "type": "string",
+          "title": "invoice"
+        },
+        "pending": {
+          "type": "boolean",
+          "title": "pending"
+        },
+        "created": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/DateFilterOpts"
+            },
+            {
+              "type": ["string", "number"]
+            }
+          ],
+          "title": "created"
+        },
+        "limit": {
+          "type": "number",
+          "title": "limit"
+        },
+        "starting_after": {
+          "type": "string",
+          "title": "starting_after"
+        },
+        "ending_before": {
+          "type": "string",
+          "title": "ending_before"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "BillingThresholdsOpts": {
+      "title": "BillingThresholdsOpts",
+      "type": "object",
+      "properties": {
+        "amount_gte": {
+          "type": "number",
+          "title": "amount_gte"
+        },
+        "reset_billing_cycle_anchor": {
+          "type": "number",
+          "title": "reset_billing_cycle_anchor"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "SubscriptionItemOpts": {
+      "title": "SubscriptionItemOpts",
+      "type": "object",
+      "properties": {
+        "billing_thresholds": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "billing_thresholds"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "price": {
+          "type": "string",
+          "title": "price"
+        },
+        "price_data": {
+          "$ref": "#/definitions/StripePrice",
+          "title": "price_data"
+        },
+        "quantity": {
+          "type": "number",
+          "title": "quantity"
+        },
+        "tax_rates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "tax_rates"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "CreateSubscriptionOpts": {
+      "title": "CreateSubscriptionOpts",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubscriptionItemOpts"
+          },
+          "title": "items"
+        },
+        "amount": {
+          "type": "number",
+          "title": "amount"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "interval": {
+          "enum": ["day", "month", "week", "year"],
+          "type": "string",
+          "title": "interval"
+        },
+        "active": {
+          "type": "boolean",
+          "title": "active"
+        },
+        "plan": {
+          "type": "string",
+          "title": "plan"
+        },
+        "price": {
+          "type": "string",
+          "title": "price"
+        },
+        "quantity": {
+          "type": "string",
+          "title": "quantity"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "cancel_at_period_end": {
+          "type": "boolean",
+          "title": "cancel_at_period_end"
+        },
+        "default_payment_method": {
+          "type": "string",
+          "title": "default_payment_method"
+        },
+        "add_invoice_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StripeHash"
+          },
+          "title": "add_invoice_items"
+        },
+        "application_fee_percent": {
+          "type": "number",
+          "title": "application_fee_percent"
+        },
+        "backdate_start_sate": {
+          "type": "number",
+          "title": "backdate_start_sate"
+        },
+        "billing_cycle_anchor": {
+          "type": "number",
+          "title": "billing_cycle_anchor"
+        },
+        "billing_thresholds": {
+          "$ref": "#/definitions/BillingThresholdsOpts",
+          "title": "billing_thresholds"
+        },
+        "cancel_at": {
+          "type": "number",
+          "title": "cancel_at"
+        },
+        "collection_method": {
+          "enum": ["charge_automatically", "send_invoice"],
+          "type": "string",
+          "title": "collection_method"
+        },
+        "coupon": {
+          "type": "string",
+          "title": "coupon"
+        },
+        "days_until_due": {
+          "type": "number",
+          "title": "days_until_due"
+        },
+        "default_source": {
+          "type": "string",
+          "title": "default_source"
+        },
+        "default_tax_rates": {
+          "type": "string",
+          "title": "default_tax_rates"
+        },
+        "off_session": {
+          "type": "boolean",
+          "title": "off_session"
+        },
+        "payment_behaviour": {
+          "enum": [
+            "allow_incomplete",
+            "error_if_incomplete",
+            "pending_if_incomplete"
+          ],
+          "type": "string",
+          "title": "payment_behaviour"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["currency", "customer", "items"]
+    },
+    "ListSubscriptionOpts": {
+      "title": "ListSubscriptionOpts",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "price": {
+          "type": "string",
+          "title": "price"
+        },
+        "status": {
+          "enum": [
+            "active",
+            "all",
+            "canceled",
+            "ended",
+            "incomplete",
+            "incomplete_expired",
+            "past_due",
+            "trialing",
+            "unpaid"
+          ],
+          "type": "string",
+          "title": "status"
+        },
+        "collection_method": {
+          "enum": ["charge_automatically", "send_invoice"],
+          "type": "string",
+          "title": "collection_method"
+        },
+        "current_period_end": {
+          "$ref": "#/definitions/DateFilterOpts",
+          "title": "current_period_end"
+        },
+        "current_period_start": {
+          "$ref": "#/definitions/DateFilterOpts",
+          "title": "current_period_start"
+        },
+        "created": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/DateFilterOpts"
+            },
+            {
+              "type": ["string", "number"]
+            }
+          ],
+          "title": "created"
+        },
+        "limit": {
+          "type": "number",
+          "title": "limit"
+        },
+        "starting_after": {
+          "type": "string",
+          "title": "starting_after"
+        },
+        "ending_before": {
+          "type": "string",
+          "title": "ending_before"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "CreatePaymentIntentOpts": {
+      "title": "CreatePaymentIntentOpts",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "title": "amount"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "confirm": {
+          "type": "boolean",
+          "title": "confirm"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "payment_method": {
+          "type": "string",
+          "title": "payment_method"
+        },
+        "off_session": {
+          "type": "boolean",
+          "title": "off_session"
+        },
+        "payment_method_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "payment_method_types"
+        },
+        "receipt_email": {
+          "type": "string",
+          "title": "receipt_email"
+        },
+        "setup_future_usage": {
+          "enum": ["off_session", "on_session"],
+          "type": "string",
+          "title": "setup_future_usage"
+        },
+        "shipping": {
+          "$ref": "#/definitions/StripeShipping",
+          "title": "shipping"
+        },
+        "statement_descriptor": {
+          "type": "string",
+          "title": "statement_descriptor"
+        },
+        "statement_descriptor_suffix": {
+          "type": "string",
+          "title": "statement_descriptor_suffix"
+        },
+        "application_fee_amount": {
+          "type": "number",
+          "title": "application_fee_amount"
+        },
+        "capture_method": {
+          "enum": ["automatic", "manual"],
+          "type": "string",
+          "title": "capture_method"
+        },
+        "confirmation_method": {
+          "enum": ["automatic", "manual"],
+          "type": "string",
+          "title": "confirmation_method"
+        },
+        "error_on_requires_action": {
+          "type": "boolean",
+          "title": "error_on_requires_action"
+        },
+        "transfer_data": {
+          "$ref": "#/definitions/StripeTransferData",
+          "title": "transfer_data"
+        },
+        "transfer_group": {
+          "type": "string",
+          "title": "transfer_group"
+        },
+        "mandate": {
+          "type": "string",
+          "title": "mandate"
+        },
+        "on_behalf_of": {
+          "type": "string",
+          "title": "on_behalf_of"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["amount", "currency"]
+    },
+    "UpdatePaymentIntentOpts": {
+      "title": "UpdatePaymentIntentOpts",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "title": "amount"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "payment_method": {
+          "type": "string",
+          "title": "payment_method"
+        },
+        "off_session": {
+          "type": "boolean",
+          "title": "off_session"
+        },
+        "payment_method_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "payment_method_types"
+        },
+        "receipt_email": {
+          "type": "string",
+          "title": "receipt_email"
+        },
+        "setup_future_usage": {
+          "enum": ["off_session", "on_session"],
+          "type": "string",
+          "title": "setup_future_usage"
+        },
+        "shipping": {
+          "$ref": "#/definitions/StripeShipping",
+          "title": "shipping"
+        },
+        "statement_descriptor": {
+          "type": "string",
+          "title": "statement_descriptor"
+        },
+        "statement_descriptor_suffix": {
+          "type": "string",
+          "title": "statement_descriptor_suffix"
+        },
+        "application_fee_amount": {
+          "type": "number",
+          "title": "application_fee_amount"
+        },
+        "error_on_requires_action": {
+          "type": "boolean",
+          "title": "error_on_requires_action"
+        },
+        "transfer_data": {
+          "$ref": "#/definitions/StripeTransferData",
+          "title": "transfer_data"
+        },
+        "transfer_group": {
+          "type": "string",
+          "title": "transfer_group"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["amount", "currency"]
+    },
+    "CapturePaymentIntentOpts": {
+      "title": "CapturePaymentIntentOpts",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "amount_to_capture": {
+          "type": "number",
+          "title": "amount_to_capture"
+        },
+        "application_fee_amount": {
+          "type": "number",
+          "title": "application_fee_amount"
+        },
+        "statement_descriptor": {
+          "type": "string",
+          "title": "statement_descriptor"
+        },
+        "statement_descriptor_suffix": {
+          "type": "string",
+          "title": "statement_descriptor_suffix"
+        },
+        "transfer_data": {
+          "$ref": "#/definitions/StripeTransferData",
+          "title": "transfer_data"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["id"]
+    },
+    "ConfirmPaymentIntentOpts": {
+      "title": "ConfirmPaymentIntentOpts",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "payment_method": {
+          "type": "string",
+          "title": "payment_method"
+        },
+        "off_session": {
+          "type": "boolean",
+          "title": "off_session"
+        },
+        "receipt_email": {
+          "type": "string",
+          "title": "receipt_email"
+        },
+        "setup_future_usage": {
+          "enum": ["off_session", "on_session"],
+          "type": "string",
+          "title": "setup_future_usage"
+        },
+        "shipping": {
+          "$ref": "#/definitions/StripeShipping",
+          "title": "shipping"
+        },
+        "payment_method_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "payment_method_types"
+        },
+        "statement_descriptor": {
+          "type": "string",
+          "title": "statement_descriptor"
+        },
+        "statement_descriptor_suffix": {
+          "type": "string",
+          "title": "statement_descriptor_suffix"
+        },
+        "error_on_requires_action": {
+          "type": "boolean",
+          "title": "error_on_requires_action"
+        },
+        "mandate": {
+          "type": "string",
+          "title": "mandate"
+        },
+        "on_behalf_of": {
+          "type": "string",
+          "title": "on_behalf_of"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["id"]
+    },
+    "CancelPaymentIntentOpts": {
+      "title": "CancelPaymentIntentOpts",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "cancellation_reason": {
+          "enum": [
+            "abandoned",
+            "duplicate",
+            "fraudulent",
+            "requested_by_customer"
+          ],
+          "type": "string",
+          "title": "cancellation_reason"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["id"]
+    },
+    "ListPaymentIntentOpts": {
+      "title": "ListPaymentIntentOpts",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "CreateAccountOpts": {
+      "title": "CreateAccountOpts",
+      "type": "object",
+      "properties": {
+        "business_profile": {
+          "type": "object",
+          "properties": {
+            "mcc": {
+              "type": "string",
+              "title": "mcc"
+            },
+            "name": {
+              "type": "string",
+              "title": "name"
+            },
+            "product_description": {
+              "type": "string",
+              "title": "product_description"
+            },
+            "support_address": {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string",
+                  "title": "city"
+                },
+                "country": {
+                  "type": "string",
+                  "title": "country"
+                },
+                "line1": {
+                  "type": "string",
+                  "title": "line1"
+                },
+                "line2": {
+                  "type": "string",
+                  "title": "line2"
+                },
+                "postal_code": {
+                  "type": "string",
+                  "title": "postal_code"
+                },
+                "state": {
+                  "type": "string",
+                  "title": "state"
+                }
+              },
+              "title": "support_address"
+            },
+            "support_email": {
+              "type": "string",
+              "title": "support_email"
+            },
+            "support_phone": {
+              "type": "string",
+              "title": "support_phone"
+            },
+            "support_url": {
+              "type": "string",
+              "title": "support_url"
+            },
+            "url": {
+              "type": "string",
+              "title": "url"
+            }
+          },
+          "title": "business_profile"
+        },
+        "business_type": {
+          "enum": ["company", "government_identity", "individual", "non_prfit"],
+          "type": "string",
+          "title": "business_type"
+        },
+        "capabilities": {
+          "type": "object",
+          "properties": {
+            "au_bacs_debit_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "au_bacs_debit_payments"
+            },
+            "bacs_debit_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "bacs_debit_payments"
+            },
+            "bancontact_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "bancontact_payments"
+            },
+            "card_issuing": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "card_issuing"
+            },
+            "card_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "card_payments"
+            },
+            "cartes_bancaires_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "cartes_bancaires_payments"
+            },
+            "eps_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "eps_payments"
+            },
+            "grabpay_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "grabpay_payments"
+            },
+            "giropay_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "giropay_payments"
+            },
+            "ideal_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "ideal_payments"
+            },
+            "jcb_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "jcb_payments"
+            },
+            "legacy_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "legacy_payments"
+            },
+            "oxxo_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "oxxo_payments"
+            },
+            "p24_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "p24_payments"
+            },
+            "sepa_debit_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "sepa_debit_payments"
+            },
+            "sofort_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "sofort_payments"
+            },
+            "tax_reporting_us_1099_k": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "tax_reporting_us_1099_k"
+            },
+            "tax_reporting_us_1099_misc": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "tax_reporting_us_1099_misc"
+            },
+            "transfers": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "transfers"
+            }
+          },
+          "title": "capabilities"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "company": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string",
+                  "title": "city"
+                },
+                "country": {
+                  "type": "string",
+                  "title": "country"
+                },
+                "line1": {
+                  "type": "string",
+                  "title": "line1"
+                },
+                "line2": {
+                  "type": "string",
+                  "title": "line2"
+                },
+                "postal_code": {
+                  "type": "string",
+                  "title": "postal_code"
+                },
+                "state": {
+                  "type": "string",
+                  "title": "state"
+                }
+              },
+              "title": "address"
+            },
+            "directors_provided": {
+              "type": "boolean",
+              "title": "directors_provided"
+            },
+            "executives_provided": {
+              "type": "boolean",
+              "title": "executives_provided"
+            },
+            "name": {
+              "type": "string",
+              "title": "name"
+            },
+            "owners_provided": {
+              "type": "boolean",
+              "title": "owners_provided"
+            },
+            "tax_id_provided": {
+              "type": "boolean",
+              "title": "tax_id_provided"
+            },
+            "verification": {
+              "type": "object",
+              "properties": {
+                "document": {
+                  "type": "object",
+                  "properties": {
+                    "back": {
+                      "type": "string",
+                      "title": "back"
+                    },
+                    "details": {
+                      "type": "string",
+                      "title": "details"
+                    },
+                    "details_code": {
+                      "type": "string",
+                      "title": "details_code"
+                    },
+                    "front": {
+                      "type": "string",
+                      "title": "front"
+                    }
+                  },
+                  "title": "document"
+                }
+              },
+              "title": "verification"
+            },
+            "country": {
+              "type": "string",
+              "title": "country"
+            },
+            "email": {
+              "type": "string",
+              "title": "email"
+            }
+          },
+          "title": "company"
+        },
+        "default_currency": {
+          "type": "string",
+          "title": "default_currency"
+        },
+        "external_account": {
+          "type": "object",
+          "properties": {
+            "object": {
+              "type": "string",
+              "enum": ["bank_account"],
+              "title": "object"
+            },
+            "country": {
+              "type": "string",
+              "title": "country"
+            },
+            "currency": {
+              "type": "string",
+              "title": "currency"
+            },
+            "account_number": {
+              "type": "string",
+              "title": "account_number"
+            },
+            "account_holder_name": {
+              "type": "string",
+              "title": "account_holder_name"
+            },
+            "account_holder_type": {
+              "type": "string",
+              "title": "account_holder_type"
+            },
+            "routing_number": {
+              "type": "string",
+              "title": "routing_number"
+            }
+          },
+          "required": ["account_number", "country", "currency", "object"],
+          "title": "external_account"
+        },
+        "settings": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "settings"
+        },
+        "tos_acceptance": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "number",
+              "title": "date"
+            },
+            "ip": {
+              "type": "string",
+              "title": "ip"
+            },
+            "user_agent": {
+              "type": "string",
+              "title": "user_agent"
+            },
+            "service_agreement": {
+              "type": "string",
+              "title": "service_agreement"
+            }
+          },
+          "title": "tos_acceptance"
+        },
+        "type": {
+          "enum": ["custom", "express", "standard"],
+          "type": "string",
+          "title": "type"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["type"]
+    },
+    "UpdateAccountOpts": {
+      "title": "UpdateAccountOpts",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "business_profile": {
+          "type": "object",
+          "properties": {
+            "mcc": {
+              "type": "string",
+              "title": "mcc"
+            },
+            "name": {
+              "type": "string",
+              "title": "name"
+            },
+            "product_description": {
+              "type": "string",
+              "title": "product_description"
+            },
+            "support_address": {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string",
+                  "title": "city"
+                },
+                "country": {
+                  "type": "string",
+                  "title": "country"
+                },
+                "line1": {
+                  "type": "string",
+                  "title": "line1"
+                },
+                "line2": {
+                  "type": "string",
+                  "title": "line2"
+                },
+                "postal_code": {
+                  "type": "string",
+                  "title": "postal_code"
+                },
+                "state": {
+                  "type": "string",
+                  "title": "state"
+                }
+              },
+              "title": "support_address"
+            },
+            "support_email": {
+              "type": "string",
+              "title": "support_email"
+            },
+            "support_phone": {
+              "type": "string",
+              "title": "support_phone"
+            },
+            "support_url": {
+              "type": "string",
+              "title": "support_url"
+            },
+            "url": {
+              "type": "string",
+              "title": "url"
+            }
+          },
+          "title": "business_profile"
+        },
+        "business_type": {
+          "enum": ["company", "government_identity", "individual", "non_prfit"],
+          "type": "string",
+          "title": "business_type"
+        },
+        "capabilities": {
+          "type": "object",
+          "properties": {
+            "au_bacs_debit_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "au_bacs_debit_payments"
+            },
+            "bacs_debit_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "bacs_debit_payments"
+            },
+            "bancontact_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "bancontact_payments"
+            },
+            "card_issuing": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "card_issuing"
+            },
+            "card_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "card_payments"
+            },
+            "cartes_bancaires_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "cartes_bancaires_payments"
+            },
+            "eps_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "eps_payments"
+            },
+            "grabpay_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "grabpay_payments"
+            },
+            "giropay_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "giropay_payments"
+            },
+            "ideal_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "ideal_payments"
+            },
+            "jcb_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "jcb_payments"
+            },
+            "legacy_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "legacy_payments"
+            },
+            "oxxo_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "oxxo_payments"
+            },
+            "p24_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "p24_payments"
+            },
+            "sepa_debit_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "sepa_debit_payments"
+            },
+            "sofort_payments": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "sofort_payments"
+            },
+            "tax_reporting_us_1099_k": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "tax_reporting_us_1099_k"
+            },
+            "tax_reporting_us_1099_misc": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "tax_reporting_us_1099_misc"
+            },
+            "transfers": {
+              "type": "object",
+              "properties": {
+                "requested": {
+                  "type": "boolean",
+                  "enum": [true],
+                  "title": "requested"
+                }
+              },
+              "required": ["requested"],
+              "title": "transfers"
+            }
+          },
+          "title": "capabilities"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "company": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string",
+                  "title": "city"
+                },
+                "country": {
+                  "type": "string",
+                  "title": "country"
+                },
+                "line1": {
+                  "type": "string",
+                  "title": "line1"
+                },
+                "line2": {
+                  "type": "string",
+                  "title": "line2"
+                },
+                "postal_code": {
+                  "type": "string",
+                  "title": "postal_code"
+                },
+                "state": {
+                  "type": "string",
+                  "title": "state"
+                }
+              },
+              "title": "address"
+            },
+            "directors_provided": {
+              "type": "boolean",
+              "title": "directors_provided"
+            },
+            "executives_provided": {
+              "type": "boolean",
+              "title": "executives_provided"
+            },
+            "name": {
+              "type": "string",
+              "title": "name"
+            },
+            "owners_provided": {
+              "type": "boolean",
+              "title": "owners_provided"
+            },
+            "tax_id_provided": {
+              "type": "boolean",
+              "title": "tax_id_provided"
+            },
+            "verification": {
+              "type": "object",
+              "properties": {
+                "document": {
+                  "type": "object",
+                  "properties": {
+                    "back": {
+                      "type": "string",
+                      "title": "back"
+                    },
+                    "details": {
+                      "type": "string",
+                      "title": "details"
+                    },
+                    "details_code": {
+                      "type": "string",
+                      "title": "details_code"
+                    },
+                    "front": {
+                      "type": "string",
+                      "title": "front"
+                    }
+                  },
+                  "title": "document"
+                }
+              },
+              "title": "verification"
+            },
+            "country": {
+              "type": "string",
+              "title": "country"
+            },
+            "email": {
+              "type": "string",
+              "title": "email"
+            }
+          },
+          "title": "company"
+        },
+        "default_currency": {
+          "type": "string",
+          "title": "default_currency"
+        },
+        "external_account": {
+          "type": "object",
+          "properties": {
+            "object": {
+              "type": "string",
+              "enum": ["bank_account"],
+              "title": "object"
+            },
+            "country": {
+              "type": "string",
+              "title": "country"
+            },
+            "currency": {
+              "type": "string",
+              "title": "currency"
+            },
+            "account_number": {
+              "type": "string",
+              "title": "account_number"
+            },
+            "account_holder_name": {
+              "type": "string",
+              "title": "account_holder_name"
+            },
+            "account_holder_type": {
+              "type": "string",
+              "title": "account_holder_type"
+            },
+            "routing_number": {
+              "type": "string",
+              "title": "routing_number"
+            }
+          },
+          "required": [
+            "account_number",
+            "country",
+            "currency",
+            "object",
+            "routing_number"
+          ],
+          "title": "external_account"
+        },
+        "settings": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "settings"
+        },
+        "tos_acceptance": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "number",
+              "title": "date"
+            },
+            "ip": {
+              "type": "string",
+              "title": "ip"
+            },
+            "user_agent": {
+              "type": "string",
+              "title": "user_agent"
+            },
+            "service_agreement": {
+              "type": "string",
+              "title": "service_agreement"
+            }
+          },
+          "title": "tos_acceptance"
+        },
+        "type": {
+          "enum": ["custom", "express", "standard"],
+          "type": "string",
+          "title": "type"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["id", "type"]
+    },
+    "CreateBankAccountOpts": {
+      "title": "CreateBankAccountOpts",
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "object",
+          "properties": {
+            "object": {
+              "type": "string",
+              "enum": ["bank_account"],
+              "title": "object"
+            },
+            "country": {
+              "type": "string",
+              "title": "country"
+            },
+            "currency": {
+              "type": "string",
+              "title": "currency"
+            },
+            "account_number": {
+              "type": "string",
+              "title": "account_number"
+            },
+            "account_holder_name": {
+              "type": "string",
+              "title": "account_holder_name"
+            },
+            "account_holder_type": {
+              "type": "string",
+              "title": "account_holder_type"
+            },
+            "routing_number": {
+              "type": "string",
+              "title": "routing_number"
+            }
+          },
+          "required": ["account_number", "country", "currency", "object"],
+          "title": "source"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["source"]
+    },
+    "RetrieveBankAccountOpts": {
+      "title": "RetrieveBankAccountOpts",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["customer", "id"]
+    },
+    "UpdateBankAccountOpts": {
+      "title": "UpdateBankAccountOpts",
+      "type": "object",
+      "properties": {
+        "account_holder_name": {
+          "type": "string",
+          "title": "account_holder_name"
+        },
+        "account_holder_type": {
+          "type": "string",
+          "title": "account_holder_type"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["customer", "id"]
+    },
+    "VerifyBankAccountOpts": {
+      "title": "VerifyBankAccountOpts",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "amounts": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "title": "amounts"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["customer", "id"]
+    },
+    "CreateCardOpts": {
+      "title": "CreateCardOpts",
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "object",
+          "properties": {
+            "object": {
+              "type": "string",
+              "enum": ["card"],
+              "title": "object"
+            },
+            "number": {
+              "type": "string",
+              "title": "number"
+            },
+            "exp_month": {
+              "type": "string",
+              "title": "exp_month"
+            },
+            "exp_year": {
+              "type": "string",
+              "title": "exp_year"
+            },
+            "cvc": {
+              "type": "string",
+              "title": "cvc"
+            },
+            "currency": {
+              "type": "string",
+              "title": "currency"
+            },
+            "name": {
+              "type": "string",
+              "title": "name"
+            },
+            "metadata": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true,
+              "title": "metadata"
+            },
+            "address_city": {
+              "type": "string",
+              "title": "address_city"
+            },
+            "address_country": {
+              "type": "string",
+              "title": "address_country"
+            },
+            "address_line1": {
+              "type": "string",
+              "title": "address_line1"
+            },
+            "address_line2": {
+              "type": "string",
+              "title": "address_line2"
+            },
+            "address_zip": {
+              "type": "string",
+              "title": "address_zip"
+            },
+            "address_state": {
+              "type": "string",
+              "title": "address_state"
+            }
+          },
+          "required": ["exp_month", "exp_year", "number", "object"],
+          "title": "source"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["source"]
+    },
+    "ListBankAccountOpts": {
+      "title": "ListBankAccountOpts",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["customer"]
+    },
+    "RetrieveCardOpts": {
+      "title": "RetrieveCardOpts",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["customer", "id"]
+    },
+    "ListCardOpts": {
+      "title": "ListCardOpts",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["customer"]
+    },
+    "UpdateCardOpts": {
+      "title": "UpdateCardOpts",
+      "type": "object",
+      "properties": {
+        "address_city": {
+          "type": "string",
+          "title": "address_city"
+        },
+        "address_country": {
+          "type": "string",
+          "title": "address_country"
+        },
+        "address_line1": {
+          "type": "string",
+          "title": "address_line1"
+        },
+        "address_line2": {
+          "type": "string",
+          "title": "address_line2"
+        },
+        "address_zip": {
+          "type": "string",
+          "title": "address_zip"
+        },
+        "address_state": {
+          "type": "string",
+          "title": "address_state"
+        },
+        "exp_month": {
+          "type": "string",
+          "title": "exp_month"
+        },
+        "exp_year": {
+          "type": "string",
+          "title": "exp_year"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "customer": {
+          "type": "string",
+          "title": "customer"
+        },
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["customer", "id"]
+    },
+    "CreateProductOpts": {
+      "title": "CreateProductOpts",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "name"
+        },
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "active": {
+          "type": "boolean",
+          "title": "active"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "attributes"
+        },
+        "caption": {
+          "type": "string",
+          "title": "caption"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "images"
+        },
+        "package_dimension": {
+          "type": "object",
+          "properties": {
+            "height": {
+              "type": "number",
+              "title": "height"
+            },
+            "length": {
+              "type": "number",
+              "title": "length"
+            },
+            "weight": {
+              "type": "number",
+              "title": "weight"
+            },
+            "width": {
+              "type": "number",
+              "title": "width"
+            }
+          },
+          "required": ["height", "length", "weight", "width"],
+          "title": "package_dimension"
+        },
+        "shippable": {
+          "type": "boolean",
+          "title": "shippable"
+        },
+        "statement_descriptor": {
+          "type": "string",
+          "title": "statement_descriptor"
+        },
+        "unit_label": {
+          "type": "string",
+          "title": "unit_label"
+        },
+        "url": {
+          "type": "string",
+          "title": "url"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["name"]
+    },
+    "UpdateProductOpts": {
+      "title": "UpdateProductOpts",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "name": {
+          "type": "boolean",
+          "title": "name"
+        },
+        "active": {
+          "type": "boolean",
+          "title": "active"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "attributes"
+        },
+        "caption": {
+          "type": "string",
+          "title": "caption"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "images"
+        },
+        "package_dimension": {
+          "type": "object",
+          "properties": {
+            "height": {
+              "type": "number",
+              "title": "height"
+            },
+            "length": {
+              "type": "number",
+              "title": "length"
+            },
+            "weight": {
+              "type": "number",
+              "title": "weight"
+            },
+            "width": {
+              "type": "number",
+              "title": "width"
+            }
+          },
+          "required": ["height", "length", "weight", "width"],
+          "title": "package_dimension"
+        },
+        "shippable": {
+          "type": "boolean",
+          "title": "shippable"
+        },
+        "statement_descriptor": {
+          "type": "string",
+          "title": "statement_descriptor"
+        },
+        "unit_label": {
+          "type": "string",
+          "title": "unit_label"
+        },
+        "url": {
+          "type": "string",
+          "title": "url"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["id"]
+    },
+    "ListProductOpts": {
+      "title": "ListProductOpts",
+      "type": "object",
+      "properties": {
+        "active": {
+          "type": "boolean",
+          "title": "active"
+        },
+        "created": {
+          "$ref": "#/definitions/DateFilterOpts",
+          "title": "created"
+        },
+        "ending_before": {
+          "type": "string",
+          "title": "ending_before"
+        },
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "ids"
+        },
+        "limit": {
+          "type": "number",
+          "title": "limit"
+        },
+        "shippable": {
+          "type": "boolean",
+          "title": "shippable"
+        },
+        "starting_after": {
+          "type": "string",
+          "title": "starting_after"
+        },
+        "url": {
+          "type": "string",
+          "title": "url"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "CreatePriceOpts": {
+      "title": "CreatePriceOpts",
+      "type": "object",
+      "properties": {
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "unit_amount": {
+          "type": "number",
+          "title": "unit_amount"
+        },
+        "active": {
+          "type": "boolean",
+          "title": "active"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "nickname"
+        },
+        "product": {
+          "type": "string",
+          "title": "product"
+        },
+        "recurring": {
+          "type": "object",
+          "properties": {
+            "interval": {
+              "enum": ["day", "month", "week", "year"],
+              "type": "string",
+              "title": "interval"
+            },
+            "aggregate_usage": {
+              "enum": ["last_during_period", "last_ever", "max", "sum"],
+              "type": "string",
+              "title": "aggregate_usage"
+            }
+          },
+          "required": ["interval"],
+          "title": "recurring"
+        },
+        "interval_count": {
+          "type": "number",
+          "title": "interval_count"
+        },
+        "usage_type": {
+          "enum": ["licensed", "metered", "quantity"],
+          "type": "string",
+          "title": "usage_type"
+        },
+        "tiers": {
+          "type": "object",
+          "properties": {
+            "up_to": {
+              "anyOf": [
+                {
+                  "enum": ["inf"],
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "title": "up_to"
+            },
+            "flat_amount": {
+              "type": "number",
+              "title": "flat_amount"
+            },
+            "flat_amount_decimal": {
+              "type": "number",
+              "title": "flat_amount_decimal"
+            },
+            "unit_amount": {
+              "type": "number",
+              "title": "unit_amount"
+            },
+            "unit_amount_decimal": {
+              "type": "number",
+              "title": "unit_amount_decimal"
+            }
+          },
+          "required": ["up_to"],
+          "title": "tiers"
+        },
+        "tiers_mode": {
+          "enum": ["graduated", "volumne"],
+          "type": "string",
+          "title": "tiers_mode"
+        },
+        "billing_scheme": {
+          "enum": ["per_unit", "tiered"],
+          "type": "string",
+          "title": "billing_scheme"
+        },
+        "lookup_key": {
+          "type": "string",
+          "title": "lookup_key"
+        },
+        "product_data": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "name"
+            },
+            "id": {
+              "type": "string",
+              "title": "id"
+            },
+            "active": {
+              "type": "boolean",
+              "title": "active"
+            },
+            "statement_descriptor": {
+              "type": "string",
+              "title": "statement_descriptor"
+            },
+            "unit_label": {
+              "type": "string",
+              "title": "unit_label"
+            },
+            "metadata": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true,
+              "title": "metadata"
+            }
+          },
+          "required": ["name"],
+          "title": "product_data"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["currency"]
+    },
+    "UpdatePriceOpts": {
+      "title": "UpdatePriceOpts",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "active": {
+          "type": "boolean",
+          "title": "active"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "nickname"
+        },
+        "lookup_key": {
+          "type": "string",
+          "title": "lookup_key"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["id"]
+    },
+    "ListPricesOpts": {
+      "title": "ListPricesOpts",
+      "type": "object",
+      "properties": {
+        "active": {
+          "type": "boolean",
+          "title": "active"
+        },
+        "currency": {
+          "type": "string",
+          "title": "currency"
+        },
+        "product": {
+          "type": "string",
+          "title": "product"
+        },
+        "type": {
+          "enum": ["one_time", "recurring"],
+          "type": "string",
+          "title": "type"
+        },
+        "lookup_keys": {
+          "type": "string",
+          "title": "lookup_keys"
+        },
+        "created": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/DateFilterOpts"
+            },
+            {
+              "type": ["string", "number"]
+            }
+          ],
+          "title": "created"
+        },
+        "limit": {
+          "type": "number",
+          "title": "limit"
+        },
+        "starting_after": {
+          "type": "string",
+          "title": "starting_after"
+        },
+        "ending_before": {
+          "type": "string",
+          "title": "ending_before"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "CreateCustomerOpts": {
+      "title": "CreateCustomerOpts",
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+              "title": "city"
+            },
+            "country": {
+              "type": "string",
+              "title": "country"
+            },
+            "line1": {
+              "type": "string",
+              "title": "line1"
+            },
+            "line2": {
+              "type": "string",
+              "title": "line2"
+            },
+            "postal_code": {
+              "type": "string",
+              "title": "postal_code"
+            },
+            "state": {
+              "type": "string",
+              "title": "state"
+            }
+          },
+          "title": "address"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "email": {
+          "type": "string",
+          "title": "email"
+        },
+        "name": {
+          "type": "string",
+          "title": "name"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "payment_method": {
+          "type": "string",
+          "title": "payment_method"
+        },
+        "phone": {
+          "type": "string",
+          "title": "phone"
+        },
+        "shipping": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string",
+                  "title": "city"
+                },
+                "country": {
+                  "type": "string",
+                  "title": "country"
+                },
+                "line1": {
+                  "type": "string",
+                  "title": "line1"
+                },
+                "line2": {
+                  "type": "string",
+                  "title": "line2"
+                },
+                "postal_code": {
+                  "type": "string",
+                  "title": "postal_code"
+                },
+                "state": {
+                  "type": "string",
+                  "title": "state"
+                }
+              },
+              "required": ["line1"],
+              "title": "address"
+            },
+            "name": {
+              "type": "string",
+              "title": "name"
+            },
+            "phone": {
+              "type": "string",
+              "title": "phone"
+            }
+          },
+          "required": ["address", "name"],
+          "title": "shipping"
+        },
+        "balance": {
+          "type": "number",
+          "title": "balance"
+        },
+        "coupon": {
+          "type": "string",
+          "title": "coupon"
+        },
+        "invoice_prefix": {
+          "type": "string",
+          "title": "invoice_prefix"
+        },
+        "next_invoice_sequence": {
+          "type": "number",
+          "title": "next_invoice_sequence"
+        },
+        "preferred_locals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "preferred_locals"
+        },
+        "promotion_code": {
+          "type": "string",
+          "title": "promotion_code"
+        },
+        "source": {
+          "type": "string",
+          "title": "source"
+        },
+        "tax_exempt": {
+          "enum": ["exempt", "none", "reverse"],
+          "type": "string",
+          "title": "tax_exempt"
+        },
+        "tax_id_data": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "ae_trn",
+                "au_abn",
+                "br_cnpj",
+                "br_cpf",
+                "ca_bn",
+                "ca_qst",
+                "ch_vat",
+                "cl_tin",
+                "es_cif",
+                "eu_vat",
+                "hk_br",
+                "id_npwp",
+                "in_gst",
+                "jp_cn",
+                "jp_rn",
+                "kr_brn",
+                "li_uid",
+                "mx_rfc",
+                "my_frp",
+                "my_itn",
+                "my_sst",
+                "no_vat",
+                "nz_gst",
+                "ru_inn",
+                "ru_kpp",
+                "sa_vat",
+                "sg_gst",
+                "sg_uen",
+                "th_vat",
+                "tw_vat",
+                "us_ein",
+                "za_vat"
+              ],
+              "type": "string",
+              "title": "type"
+            },
+            "value": {
+              "type": "number",
+              "title": "value"
+            }
+          },
+          "required": ["type", "value"],
+          "title": "tax_id_data"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "UpdateCustomerOpts": {
+      "title": "UpdateCustomerOpts",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+              "title": "city"
+            },
+            "country": {
+              "type": "string",
+              "title": "country"
+            },
+            "line1": {
+              "type": "string",
+              "title": "line1"
+            },
+            "line2": {
+              "type": "string",
+              "title": "line2"
+            },
+            "postal_code": {
+              "type": "string",
+              "title": "postal_code"
+            },
+            "state": {
+              "type": "string",
+              "title": "state"
+            }
+          },
+          "title": "address"
+        },
+        "description": {
+          "type": "string",
+          "title": "description"
+        },
+        "email": {
+          "type": "string",
+          "title": "email"
+        },
+        "name": {
+          "type": "string",
+          "title": "name"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "payment_method": {
+          "type": "string",
+          "title": "payment_method"
+        },
+        "phone": {
+          "type": "string",
+          "title": "phone"
+        },
+        "shipping": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string",
+                  "title": "city"
+                },
+                "country": {
+                  "type": "string",
+                  "title": "country"
+                },
+                "line1": {
+                  "type": "string",
+                  "title": "line1"
+                },
+                "line2": {
+                  "type": "string",
+                  "title": "line2"
+                },
+                "postal_code": {
+                  "type": "string",
+                  "title": "postal_code"
+                },
+                "state": {
+                  "type": "string",
+                  "title": "state"
+                }
+              },
+              "required": ["line1"],
+              "title": "address"
+            },
+            "name": {
+              "type": "string",
+              "title": "name"
+            },
+            "phone": {
+              "type": "string",
+              "title": "phone"
+            }
+          },
+          "required": ["address", "name"],
+          "title": "shipping"
+        },
+        "balance": {
+          "type": "number",
+          "title": "balance"
+        },
+        "coupon": {
+          "type": "string",
+          "title": "coupon"
+        },
+        "invoice_prefix": {
+          "type": "string",
+          "title": "invoice_prefix"
+        },
+        "next_invoice_sequence": {
+          "type": "number",
+          "title": "next_invoice_sequence"
+        },
+        "preferred_locals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "preferred_locals"
+        },
+        "promotion_code": {
+          "type": "string",
+          "title": "promotion_code"
+        },
+        "source": {
+          "type": "string",
+          "title": "source"
+        },
+        "tax_exempt": {
+          "enum": ["exempt", "none", "reverse"],
+          "type": "string",
+          "title": "tax_exempt"
+        },
+        "tax_id_data": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "ae_trn",
+                "au_abn",
+                "br_cnpj",
+                "br_cpf",
+                "ca_bn",
+                "ca_qst",
+                "ch_vat",
+                "cl_tin",
+                "es_cif",
+                "eu_vat",
+                "hk_br",
+                "id_npwp",
+                "in_gst",
+                "jp_cn",
+                "jp_rn",
+                "kr_brn",
+                "li_uid",
+                "mx_rfc",
+                "my_frp",
+                "my_itn",
+                "my_sst",
+                "no_vat",
+                "nz_gst",
+                "ru_inn",
+                "ru_kpp",
+                "sa_vat",
+                "sg_gst",
+                "sg_uen",
+                "th_vat",
+                "tw_vat",
+                "us_ein",
+                "za_vat"
+              ],
+              "type": "string",
+              "title": "type"
+            },
+            "value": {
+              "type": "number",
+              "title": "value"
+            }
+          },
+          "required": ["type", "value"],
+          "title": "tax_id_data"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["id"]
+    },
+    "ListCustomerOpts": {
+      "title": "ListCustomerOpts",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "title": "email"
+        },
+        "created": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/DateFilterOpts"
+            },
+            {
+              "type": ["string", "number"]
+            }
+          ],
+          "title": "created"
+        },
+        "limit": {
+          "type": "number",
+          "title": "limit"
+        },
+        "starting_after": {
+          "type": "string",
+          "title": "starting_after"
+        },
+        "ending_before": {
+          "type": "string",
+          "title": "ending_before"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "CreateRefundOpts": {
+      "title": "CreateRefundOpts",
+      "type": "object",
+      "properties": {
+        "charge": {
+          "type": "string",
+          "title": "charge"
+        },
+        "amount": {
+          "type": "number",
+          "title": "amount"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "payment_intent": {
+          "type": "string",
+          "title": "payment_intent"
+        },
+        "reason": {
+          "enum": ["duplicate", "fraudulent", "requested_by_customer"],
+          "type": "string",
+          "title": "reason"
+        },
+        "reverse_transfer": {
+          "type": "boolean",
+          "title": "reverse_transfer"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      }
+    },
+    "UpdateRefundOpts": {
+      "title": "UpdateRefundOpts",
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true,
+          "title": "metadata"
+        },
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "stripeAccount": {
+          "type": "string",
+          "title": "stripeAccount"
+        }
+      },
+      "required": ["id"]
+    }
+  }
+}
