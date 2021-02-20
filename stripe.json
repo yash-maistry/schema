@@ -2581,10 +2581,6 @@
         "reset_billing_cycle_anchor": {
           "type": "number",
           "title": "reset_billing_cycle_anchor"
-        },
-        "stripeAccount": {
-          "type": "string",
-          "title": "stripeAccount"
         }
       }
     },
